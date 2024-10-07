@@ -1,0 +1,27 @@
+.jumbotron {
+  padding: 100px 25px;
+}
+
+/* .container {
+  background-color: #5a5555;
+} */
+
+/* .search-results {
+  background-color: #b25252;
+} */
+
+.results {
+  background-color: #ffffff;
+  list-style-type: none; /* Remove bullets */
+  padding: 10; /* Remove padding */
+  margin: 0; /* Remove margins */
+}
+
+li.search-result {
+  border-bottom: 2px grey;
+  background-color: light-blue;
+}
+
+/* .pagination {
+  background-color: blue;
+} */

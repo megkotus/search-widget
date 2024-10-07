@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script defer src="script.js"></script>
+    <title>Final Search</title>
+  </head>
+  <body>
+    <div class="jumbotron text-center">
+      <h1>Dogs</h1>
+      <p>A library of dog breeds</p>
+      <form class="form form-inline" id="form" action="#">
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control"
+            size="70"
+            placeholder="Search for your fluffy friend"
+            id ="input"
+            required
+          />
+          <div class="input-group-btn">
+            <button type="submit" class="btn btn-danger" id="submit">Search</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="container">
+        <div class="search-results">
+            <ul class="results">
+            </ul>
+    
+            <div class="pagination">
+              <!-- <button class="btn--inline pagination__btn--prev">
+                <svg class="search__icon">
+                  <use href="src/img/icons.svg#icon-arrow-left"></use>
+                </svg>
+                <span>Page 1</span>
+              </button>
+              <button class="btn--inline pagination__btn--next">
+                <span>Page 3</span>
+                <svg class="search__icon">
+                  <use href="src/img/icons.svg#icon-arrow-right"></use>
+                </svg>
+              </button> -->
+            </div>
+      <!-- <div class="row">
+        <div class="searchResult col-md-6 offset-md-6">Hi</div>
+      </div>
+      <div class="row">
+        <div class="whiteSpace col-md-6 offset-md-6">Hi</div>
+      </div>
+      <div class="row">
+        <div class="searchResult col-md-6 offset-md-6">Hi</div>
+      </div> -->
+    </div>
+  </body>
+</html>
