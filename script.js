@@ -6,7 +6,7 @@ const TIMEOUT_SEC = 10;
 const RES_PER_PAGE = 10;
 const KEY =
   "api_key=live_HpBbdxFL6y03NezZL77QoH9nD6AiouDWrtOkhb8fs2jJryxXFNzLtJEpPP6GUPxA";
-const letters = /^[A-Za-z]+$/;
+const letters = /^[A-Za-z ]+$/;
 
 const headers = new Headers({
   "Content-Type": "application/json",
