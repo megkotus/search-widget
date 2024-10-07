@@ -6,6 +6,7 @@ const TIMEOUT_SEC = 10;
 const RES_PER_PAGE = 10;
 const KEY =
   "api_key=live_HpBbdxFL6y03NezZL77QoH9nD6AiouDWrtOkhb8fs2jJryxXFNzLtJEpPP6GUPxA";
+const letters = /^[A-Za-z]+$/;
 
 const headers = new Headers({
   "Content-Type": "application/json",
@@ -20,6 +21,7 @@ const requestOptions = {
 };
 
 const form = document.getElementById("form");
+const inputField = document.getElementById("input");
 
 let parentElement;
 let data;
@@ -124,8 +126,14 @@ const renderSearchResults = async function (query) {
   }
 };
 
+inputField.addEventListener("keydown", function (e) {
+  if (!e.key.match(letters)) e.preventDefault();
+});
+
 form.addEventListener("submit", function (e) {
   e.preventDefault();
+  if (!form.querySelector(".form-control").value.match(letters))
+    alert("Please use only letters");
   if (searchResult.length != 0) clearSearchResults();
   const query = form.querySelector(".form-control").value;
   //   console.log(query);
