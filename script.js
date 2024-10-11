@@ -5,6 +5,7 @@ const TIMEOUT_SEC = 10;
 const RES_PER_PAGE = 10;
 const letters = /^[A-Za-z ]+$/;
 let noResultsMessage = false;
+let input = "";
 
 // API headers
 const headers = new Headers({
@@ -18,14 +19,18 @@ const requestOptions = {
   redirect: "follow",
 };
 
+// DOM elements
 const form = document.getElementById("form");
 const inputField = document.getElementById("input");
-const parentElement = document.querySelector(".results");
+const resultsList = document.getElementById("results");
+const autocompleteList = document.getElementById("list-group");
 
 let data;
 let allbreeds;
+let allBreedNames = [];
 let searchResult = [];
 
+// Handle timeout
 const timeout = function (s) {
   return new Promise(function (_, reject) {
     setTimeout(function () {
@@ -36,6 +41,7 @@ const timeout = function (s) {
   });
 };
 
+// Fetch API data
 const AJAX = async function (url) {
   try {
     const res = await Promise.race([
@@ -56,8 +62,7 @@ const loadAllBreeds = async function () {
   try {
     allbreeds = await AJAX(`${API_URL}${ENDPOINT_BREEDS}`);
 
-    // allbreeds = data.map(({ id, name }) => ({ id, name }));
-    // console.log(allbreeds);
+    allBreedNames = allbreeds.map((dog) => dog.name);
   } catch (err) {
     console.error(`${err} 💥`);
     throw err;
@@ -66,17 +71,19 @@ const loadAllBreeds = async function () {
 
 loadAllBreeds();
 
-// !!! CHANGE - Clear search
+// ------- Search ---------
+
+// Clear search
 function clearSearchResults() {
   document.querySelector(".results").innerHTML = "";
 }
 
-// !!! CHANGE - Render NO RESULTS
+// Render NO RESULTS
 function renderNoResults() {
   noResultsMessage = true;
 
   const newDiv = document.createElement("div");
-  parentElement.appendChild(newDiv);
+  resultsList.appendChild(newDiv);
 
   newDiv.textContent = "Sorry, no doggos found!";
 
@@ -114,14 +121,14 @@ const renderSearchResults = async function (query) {
       const generateMarUp = function (dog) {
         // Create new div for result item
         const newDiv = document.createElement("div");
-        parentElement.appendChild(newDiv);
+        resultsList.appendChild(newDiv);
 
         // Clone the template
         const template = document.getElementById("search-result-item");
 
         const clone = template.content.cloneNode(true);
 
-        parentElement.insertBefore(clone, parentElement.firstElementChild);
+        resultsList.insertBefore(clone, resultsList.firstElementChild);
 
         // Fill the template
         let dogBreed = document.getElementById("breed");
@@ -149,8 +156,51 @@ const renderSearchResults = async function (query) {
   }
 };
 
+// ------- Autocomplete -------
+
+const clearAutocomplete = function () {
+  // document.querySelector(".list-group").innerHTML = "";
+  autocompleteList.replaceChildren();
+};
+
+// FIX - Clear list
 inputField.addEventListener("keydown", function (e) {
+  // ?????? WHY NOT WORKING?
+  // clearAutocomplete();
+
+  // Read input
   if (!e.key.match(letters)) e.preventDefault();
+  e.key === "Backspace"
+    ? input !== ""
+      ? (input = input.slice(0, -1))
+      : input
+    : (input += e.key);
+
+  // Clear list
+  if (input === "") clearAutocomplete();
+
+  // Find matches
+  const autocompleteResults = allBreedNames.filter((breed) => {
+    return breed.includes(input.toLowerCase());
+  });
+
+  // Render results
+  const renderAutocomplete = function () {
+    const newDiv = document.createElement("div");
+    autocompleteList.appendChild(newDiv);
+
+    autocompleteResults.map((res) => {
+      const template = document.getElementById("autofill-items-list");
+      const listItem = document.getElementById("list-item");
+
+      const clone = template.content.cloneNode(true);
+
+      autocompleteList.insertBefore(clone, autocompleteList.firstElementChild);
+      listItem.textContent = res;
+    });
+  };
+
+  renderAutocomplete();
 });
 
 form.addEventListener("submit", function (e) {

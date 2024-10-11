@@ -28,6 +28,7 @@
             autocomplete="off" 
             required
           />
+          <div class="list-group" id="list-group"></div>
           <div class="input-group-btn">
             <button type="submit" class="btn btn-danger" id="submit">
               Search
@@ -50,6 +51,10 @@
             <img id="img" width="150"></img>
           </div>
         </li>
+      </template>
+
+      <template id="autofill-items-list">
+        <button type="button" class="list-group-item list-group-item-action" id="list-item"></button>
       </template>
 
       <div class="pagination">
