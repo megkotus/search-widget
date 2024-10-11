@@ -24,22 +24,36 @@
             class="form-control"
             size="70"
             placeholder="Search for your fluffy friend"
-            id ="input"
+            id="input"
+            autocomplete="off" 
             required
           />
           <div class="input-group-btn">
-            <button type="submit" class="btn btn-danger" id="submit">Search</button>
+            <button type="submit" class="btn btn-danger" id="submit">
+              Search
+            </button>
           </div>
         </div>
       </form>
     </div>
     <div class="container">
-        <div class="search-results">
-            <ul class="results">
-            </ul>
-    
-            <div class="pagination">
-              <!-- <button class="btn--inline pagination__btn--prev">
+      <div class="search-results">
+        <ul class="results" id="results">
+        </ul>
+      </div>
+      
+      <template id="search-result-item">
+        <li>
+          <div class="dog">
+            <h3 id="breed"></h3>
+            <p id="description"></p>
+            <img id="img" width="150"></img>
+          </div>
+        </li>
+      </template>
+
+      <div class="pagination">
+        <!-- <button class="btn--inline pagination__btn--prev">
                 <svg class="search__icon">
                   <use href="src/img/icons.svg#icon-arrow-left"></use>
                 </svg>
@@ -51,7 +65,7 @@
                   <use href="src/img/icons.svg#icon-arrow-right"></use>
                 </svg>
               </button> -->
-            </div>
+      </div>
       <!-- <div class="row">
         <div class="searchResult col-md-6 offset-md-6">Hi</div>
       </div>

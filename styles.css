@@ -17,7 +17,7 @@
   margin: 0; /* Remove margins */
 }
 
-li.search-result {
+li {
   border-bottom: 2px grey;
   background-color: light-blue;
 }

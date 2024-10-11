@@ -3,17 +3,15 @@ const ENDPOINT_IMAGE = "v1/images/";
 const ENDPOINT_BREEDS = "v1/breeds";
 const TIMEOUT_SEC = 10;
 const RES_PER_PAGE = 10;
-const KEY =
-  "api_key=live_HpBbdxFL6y03NezZL77QoH9nD6AiouDWrtOkhb8fs2jJryxXFNzLtJEpPP6GUPxA";
 const letters = /^[A-Za-z ]+$/;
 let noResultsMessage = false;
 
+// API headers
 const headers = new Headers({
   "Content-Type": "application/json",
-  "x-api-key":
-    "api_key=live_HpBbdxFL6y03NezZL77QoH9nD6AiouDWrtOkhb8fs2jJryxXFNzLtJEpPP6GUPxA",
 });
 
+// API request options
 const requestOptions = {
   method: "GET",
   headers: headers,
@@ -22,8 +20,8 @@ const requestOptions = {
 
 const form = document.getElementById("form");
 const inputField = document.getElementById("input");
+const parentElement = document.querySelector(".results");
 
-let parentElement;
 let data;
 let allbreeds;
 let searchResult = [];
@@ -53,6 +51,7 @@ const AJAX = async function (url) {
   }
 };
 
+// Load all data
 const loadAllBreeds = async function () {
   try {
     allbreeds = await AJAX(`${API_URL}${ENDPOINT_BREEDS}`);
@@ -67,38 +66,41 @@ const loadAllBreeds = async function () {
 
 loadAllBreeds();
 
+// !!! CHANGE - Clear search
 function clearSearchResults() {
   document.querySelector(".results").innerHTML = "";
 }
 
+// !!! CHANGE - Render NO RESULTS
 function renderNoResults() {
   noResultsMessage = true;
-  parentElement = document.querySelector(".results");
 
-  const markup = `<div style="text-align:center;"><h4>No happy tails found. Try again🐶</h4></div>`;
+  const newDiv = document.createElement("div");
+  parentElement.appendChild(newDiv);
 
-  parentElement.insertAdjacentHTML("afterbegin", markup);
+  newDiv.textContent = "Sorry, no doggos found!";
 
   return noResultsMessage;
 }
 
+// Render search results
 const renderSearchResults = async function (query) {
   try {
     matchedBreeds = allbreeds.filter((dog) =>
-      dog.name.toLowerCase().includes(query)
+      dog.name.toLowerCase().includes(query.toLowerCase())
     );
     if (matchedBreeds.length === 0) {
       renderNoResults();
       return;
     }
 
-    console.log(matchedBreeds);
-
+    // Object from NODE
     matchedBreeds.map(async function (dog) {
       const picRef = dog.reference_image_id;
       const picture = await AJAX(`${API_URL}${ENDPOINT_IMAGE}${picRef}`);
+
       searchResult = {
-        name: dog.name || "Some cute dog",
+        name: dog.name,
         breedGroup: dog.breed_group,
         bredFor: dog.bred_for,
         weight: dog.weight.metric,
@@ -108,28 +110,39 @@ const renderSearchResults = async function (query) {
         img: picture.url,
       };
 
+      // Render result item
       const generateMarUp = function (dog) {
-        parentElement = document.querySelector(".results");
+        // Create new div for result item
+        const newDiv = document.createElement("div");
+        parentElement.appendChild(newDiv);
 
-        const markup = `<li class="search-result">
-                <div class="dog-name"> 
-                    <h3>${dog.name}</h3>
-                    <p>The breed belongs to ${dog.breedGroup} dogs. Purpose: ${
+        // Clone the template
+        const template = document.getElementById("search-result-item");
+
+        const clone = template.content.cloneNode(true);
+
+        parentElement.insertBefore(clone, parentElement.firstElementChild);
+
+        // Fill the template
+        let dogBreed = document.getElementById("breed");
+        let dogDescription = document.getElementById("description");
+        let dogImg = document.getElementById("img");
+
+        dogBreed.textContent = dog.name;
+
+        dogDescription.textContent = `The breed belongs to ${dog.breedGroup?.toLowerCase()} dogs. Purpose: ${
           dog.bredFor
-        }. The breed is ${dog.temperament.toLowerCase()}. Has a life span of ${
+        }. The breed is ${dog.temperament?.toLowerCase()}. Has a life span of ${
           dog.lifeSpan
-        }. Weight: ${dog.weight}. Height: ${dog.height}. </p>
-                    <img src=${dog.img} alt=${dog.name} width="150"></img>
-                </div>
-            </li>`;
+        }. Weight: ${dog.weight}. Height: ${dog.height}.`;
 
-        parentElement.insertAdjacentHTML("afterbegin", markup);
+        dogImg.src = picture.url;
+
+        dogImg.alt = `${dog.name}`;
       };
 
       generateMarUp(searchResult);
     });
-
-    // console.log(dog.name);
   } catch (err) {
     console.error(`${err} 💥`);
     throw err;
@@ -149,8 +162,6 @@ form.addEventListener("submit", function (e) {
   if (searchResult.length != 0 || noResultsMessage) clearSearchResults();
 
   if (!input.value.match(letters)) alert("Please use only letters");
-  console.log(input.value.length);
   if (input.value.length < 3) alert("Please type at least 3 characters");
-  //   console.log(query);
   renderSearchResults(query);
 });
