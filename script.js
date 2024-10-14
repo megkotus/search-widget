@@ -169,7 +169,9 @@ inputField.addEventListener("keydown", function (e) {
   // clearAutocomplete();
 
   // Read input
+  // Prevent symbols and numerals input
   if (!e.key.match(letters)) e.preventDefault();
+
   e.key === "Backspace"
     ? input !== ""
       ? (input = input.slice(0, -1))

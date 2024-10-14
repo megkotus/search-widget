@@ -15,27 +15,29 @@
   </head>
   <body>
     <div class="jumbotron text-center" id="header">
-      <h1>Dogs</h1>
-      <p>A library of dog breeds</p>
-      <form class="form form-inline" id="form" action="#">
-        <div class="input-group">
-          <input
-            type="text"
-            class="form-control"
-            size="70"
-            placeholder="Search for your fluffy friend"
-            id="input"
-            autocomplete="off" 
-            required
-          />
-          <div class="list-group" id="list-group"></div>
-          <div class="input-group-btn">
-            <button type="submit" class="btn btn-danger" id="submit">
-              Search
-            </button>
+      <div class="container">
+        <h1>Dogs</h1>
+        <p>A library of dog breeds</p>
+        <form class="form form-inline" id="form" action="#">
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              size="150"
+              placeholder="Search for your fluffy friend"
+              id="input"
+              autocomplete="off" 
+              required
+            />
+            <div class="input-group-btn">
+              <button type="submit" class="btn btn-danger" id="submit">
+                Search
+              </button>
+            </div>
           </div>
-        </div>
-      </form>
+          <div class="list-group" id="list-group"></div>
+        </form>
+      </div>
     </div>
     <div class="container">
       <div class="search-results">
@@ -45,16 +47,16 @@
       
       <template id="search-result-item">
         <li>
-          <div class="dog">
+          <div id="dog">
             <h3 id="breed"></h3>
             <p id="description"></p>
-            <img id="img" width="150"></img>
+            <img id="img" width="150" height="150"></img>
           </div>
         </li>
       </template>
 
       <template id="autofill-items-list">
-        <button type="button" class="list-group-item list-group-item-action" id="list-item"></button>
+          <button type="button" class="list-group-item list-group-item-action" id="list-item"></button>
       </template>
 
       <div class="pagination">

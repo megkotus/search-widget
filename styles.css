@@ -10,6 +10,17 @@
   background-color: #b25252;
 } */
 
+.input-group {
+  position: relative;
+  width: 100%;
+}
+
+.list-group {
+  position: absolute;
+  width: 50%;
+  z-index: 1000;
+}
+
 .results {
   background-color: #ffffff;
   list-style-type: none; /* Remove bullets */
