@@ -166,9 +166,11 @@ const clearAutocomplete = function () {
   autocompleteList.replaceChildren();
 };
 
-// FIX - Clear list
+// Clear list
+
+// ----- TO-DO: FIX clear input; 2. Add arrows 3. Find another way to filter keys
+
 inputField.addEventListener("keydown", function (e) {
-  // ?????? WHY NOT WORKING?
   if (autocompleteList.hasChildNodes()) clearAutocomplete();
 
   // Read input
@@ -215,6 +217,7 @@ inputField.addEventListener("keydown", function (e) {
   console.log(input);
 });
 
+// Choose autocomplete result
 autocompleteList.addEventListener("click", function (e) {
   const query = e.target.closest("button").textContent;
   if (query) {
@@ -224,6 +227,7 @@ autocompleteList.addEventListener("click", function (e) {
   }
 });
 
+// Submit form
 form.addEventListener("submit", function (e) {
   e.preventDefault();
   input = "";
