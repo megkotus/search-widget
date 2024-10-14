@@ -1,3 +1,9 @@
+// ----- TO-DO:
+// 1. FIX clear input - saves meta, enter etc.;
+// 2. Add arrows for autocomplete nav
+// 3. Find another way to filter out input keys
+// 4. !!! Autocomplete doesn't show the first child
+
 const API_URL = "https://api.thedogapi.com/";
 const ENDPOINT_IMAGE = "v1/images/";
 const ENDPOINT_BREEDS = "v1/breeds";
@@ -167,9 +173,6 @@ const clearAutocomplete = function () {
 };
 
 // Clear list
-
-// ----- TO-DO: FIX clear input; 2. Add arrows 3. Find another way to filter keys
-
 inputField.addEventListener("keydown", function (e) {
   if (autocompleteList.hasChildNodes()) clearAutocomplete();
 
@@ -191,7 +194,7 @@ inputField.addEventListener("keydown", function (e) {
 
   // Find matches
   const autocompleteResults = allBreedNames.filter((breed) => {
-    return breed.includes(input.toLowerCase());
+    return breed.toLowerCase().includes(input.toLowerCase());
   });
 
   // Render results
