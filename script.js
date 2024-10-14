@@ -6,6 +6,7 @@ const RES_PER_PAGE = 10;
 const letters = /^[A-Za-z ]+$/;
 let noResultsMessage = false;
 let input = "";
+// let matchedBreeds = [];
 
 // API headers
 const headers = new Headers({
@@ -75,6 +76,8 @@ loadAllBreeds();
 
 // Clear search
 function clearSearchResults() {
+  input = "";
+  inputField.value = "";
   document.querySelector(".results").innerHTML = "";
 }
 
@@ -166,7 +169,7 @@ const clearAutocomplete = function () {
 // FIX - Clear list
 inputField.addEventListener("keydown", function (e) {
   // ?????? WHY NOT WORKING?
-  // clearAutocomplete();
+  if (autocompleteList.hasChildNodes()) clearAutocomplete();
 
   // Read input
   // Prevent symbols and numerals input
@@ -179,7 +182,10 @@ inputField.addEventListener("keydown", function (e) {
     : (input += e.key);
 
   // Clear list
-  if (input === "") clearAutocomplete();
+  if (input === "") {
+    clearAutocomplete();
+    return;
+  }
 
   // Find matches
   const autocompleteResults = allBreedNames.filter((breed) => {
@@ -188,32 +194,45 @@ inputField.addEventListener("keydown", function (e) {
 
   // Render results
   const renderAutocomplete = function () {
-    const newDiv = document.createElement("div");
-    autocompleteList.appendChild(newDiv);
+    // const newDiv = document.createElement("div");
+    // autocompleteList.appendChild(newDiv);
 
-    autocompleteResults.map((res) => {
+    autocompleteResults.map(async (res) => {
       const template = document.getElementById("autofill-items-list");
       const listItem = document.getElementById("list-item");
 
       const clone = template.content.cloneNode(true);
 
-      autocompleteList.insertBefore(clone, autocompleteList.firstElementChild);
-      listItem.textContent = res;
+      await autocompleteList.insertBefore(
+        clone,
+        autocompleteList.firstElementChild
+      );
+      if (listItem) listItem.textContent = res;
     });
   };
 
   renderAutocomplete();
+  console.log(input);
+});
+
+autocompleteList.addEventListener("click", function (e) {
+  const query = e.target.closest("button").textContent;
+  if (query) {
+    clearAutocomplete();
+    clearSearchResults();
+    renderSearchResults(query);
+  }
 });
 
 form.addEventListener("submit", function (e) {
   e.preventDefault();
+  input = "";
 
-  const input = form.querySelector(".form-control");
-  const query = input.value;
+  const query = form.querySelector(".form-control").value;
 
   if (searchResult.length != 0 || noResultsMessage) clearSearchResults();
 
-  if (!input.value.match(letters)) alert("Please use only letters");
-  if (input.value.length < 3) alert("Please type at least 3 characters");
+  if (!query.match(letters)) alert("Please use only letters");
+  // if (input.value.length < 3) alert("Please type at least 3 characters");
   renderSearchResults(query);
 });
