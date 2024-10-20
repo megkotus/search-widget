@@ -81,9 +81,13 @@ loadAllBreeds();
 // ------- Search ---------
 
 // Clear search
-function clearSearchResults() {
+function clearInput() {
   input = "";
   inputField.value = "";
+}
+
+function clearSearchResults() {
+  clearInput();
   document.querySelector(".results").innerHTML = "";
 }
 
@@ -176,18 +180,26 @@ const clearAutocomplete = function () {
 inputField.addEventListener("keydown", function (e) {
   if (autocompleteList.hasChildNodes()) clearAutocomplete();
 
-  // Read input
   // Prevent symbols and numerals input
-  if (!e.key.match(letters)) e.preventDefault();
+  if (!e.key.match(letters)) {
+    e.preventDefault();
+  }
 
-  e.key === "Backspace"
-    ? input !== ""
-      ? (input = input.slice(0, -1))
-      : input
-    : (input += e.key);
+  // Read input
+  if (e.key.match(letters) && e.key.length < 2) {
+    input += e.key;
+  }
 
-  // Clear list
-  if (input === "") {
+  if (e.key === "Backspace" && input !== "") {
+    input = input.slice(0, -1);
+    // Clear list
+    if (input === "") {
+      clearAutocomplete();
+      return;
+    }
+  }
+
+  if (e.key === "Enter") {
     clearAutocomplete();
     return;
   }
@@ -217,7 +229,6 @@ inputField.addEventListener("keydown", function (e) {
   };
 
   renderAutocomplete();
-  console.log(input);
 });
 
 // Choose autocomplete result
@@ -233,13 +244,18 @@ autocompleteList.addEventListener("click", function (e) {
 // Submit form
 form.addEventListener("submit", function (e) {
   e.preventDefault();
-  input = "";
 
   const query = form.querySelector(".form-control").value;
 
+  // if (!query.match(letters)) alert("Please use only letters");
+  if (inputField.value.length < 3) {
+    alert("Please type at least 3 characters");
+    return;
+  }
+
   if (searchResult.length != 0 || noResultsMessage) clearSearchResults();
 
-  if (!query.match(letters)) alert("Please use only letters");
-  // if (input.value.length < 3) alert("Please type at least 3 characters");
   renderSearchResults(query);
+  clearAutocomplete();
+  clearInput();
 });
