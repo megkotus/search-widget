@@ -214,16 +214,15 @@ inputField.addEventListener("keydown", function (e) {
     // const newDiv = document.createElement("div");
     // autocompleteList.appendChild(newDiv);
 
-    autocompleteResults.map(async (res) => {
+    autocompleteResults.map((res) => {
       const template = document.getElementById("autofill-items-list");
-      const listItem = document.getElementById("list-item");
-
       const clone = template.content.cloneNode(true);
 
-      await autocompleteList.insertBefore(
-        clone,
-        autocompleteList.firstElementChild
-      );
+      // Create list item
+      autocompleteList.insertBefore(clone, autocompleteList.firstElementChild);
+
+      const listItem = document.getElementById("list-item");
+
       if (listItem) listItem.textContent = res;
     });
   };
