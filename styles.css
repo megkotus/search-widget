@@ -23,14 +23,9 @@
 
 .results {
   background-color: #ffffff;
-  list-style-type: none; /* Remove bullets */
-  padding: 10; /* Remove padding */
-  margin: 0; /* Remove margins */
-}
-
-li {
-  border-bottom: 2px grey;
-  background-color: light-blue;
+  list-style-type: none;
+  padding: 10;
+  margin: 0;
 }
 
 /* .pagination {

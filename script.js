@@ -12,6 +12,7 @@ const RES_PER_PAGE = 10;
 const letters = /^[A-Za-z ]+$/;
 let noResultsMessage = false;
 let input = "";
+let index = -1;
 // let matchedBreeds = [];
 
 // API headers
@@ -80,12 +81,14 @@ loadAllBreeds();
 
 // ------- Search ---------
 
-// Clear search
+// Clear input value
 function clearInput() {
   input = "";
   inputField.value = "";
+  index = -1;
 }
 
+// Clear search results
 function clearSearchResults() {
   clearInput();
   document.querySelector(".results").innerHTML = "";
@@ -171,12 +174,12 @@ const renderSearchResults = async function (query) {
 
 // ------- Autocomplete -------
 
+// Clear list
 const clearAutocomplete = function () {
-  // document.querySelector(".list-group").innerHTML = "";
   autocompleteList.replaceChildren();
 };
 
-// Clear list
+// Read input
 inputField.addEventListener("keydown", function (e) {
   if (autocompleteList.hasChildNodes()) clearAutocomplete();
 
@@ -185,11 +188,12 @@ inputField.addEventListener("keydown", function (e) {
     e.preventDefault();
   }
 
-  // Read input
+  // Read character
   if (e.key.match(letters) && e.key.length < 2) {
     input += e.key;
   }
 
+  // Erase
   if (e.key === "Backspace" && input !== "") {
     input = input.slice(0, -1);
     // Clear list
@@ -199,11 +203,6 @@ inputField.addEventListener("keydown", function (e) {
     }
   }
 
-  if (e.key === "Enter") {
-    clearAutocomplete();
-    return;
-  }
-
   // Find matches
   const autocompleteResults = allBreedNames.filter((breed) => {
     return breed.toLowerCase().includes(input.toLowerCase());
@@ -211,9 +210,6 @@ inputField.addEventListener("keydown", function (e) {
 
   // Render results
   const renderAutocomplete = function () {
-    // const newDiv = document.createElement("div");
-    // autocompleteList.appendChild(newDiv);
-
     autocompleteResults.map((res) => {
       const template = document.getElementById("autofill-items-list");
       const clone = template.content.cloneNode(true);
@@ -240,13 +236,34 @@ autocompleteList.addEventListener("click", function (e) {
   }
 });
 
+inputField.addEventListener("keydown", function (e) {
+  const listItems = document.querySelectorAll(".list-group-item");
+
+  if (e.key === "ArrowDown" && index < listItems.length) {
+    index === listItems.length - 1 ? (index = 0) : index++;
+    listItems.classList?.remove("active");
+    listItems[index].classList?.add("active");
+  }
+
+  if (e.key === "ArrowUp") {
+    index === -1 || index === 0 ? (index = listItems.length - 1) : index--;
+    listItems.classList?.remove("active");
+    listItems[index].classList?.add("active");
+  }
+  if (e.key === "Enter" && index !== -1) {
+    e.preventDefault();
+    const query = listItems[index].textContent;
+    clearAutocomplete();
+    clearSearchResults();
+    renderSearchResults(query);
+  }
+});
+
 // Submit form
 form.addEventListener("submit", function (e) {
   e.preventDefault();
-
   const query = form.querySelector(".form-control").value;
 
-  // if (!query.match(letters)) alert("Please use only letters");
   if (inputField.value.length < 3) {
     alert("Please type at least 3 characters");
     return;
