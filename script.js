@@ -236,6 +236,16 @@ autocompleteList.addEventListener("click", function (e) {
   }
 });
 
+// For mobile
+autocompleteList.addEventListener("touchstart", function (e) {
+  const query = e.target.closest("button").textContent;
+  if (query) {
+    clearAutocomplete();
+    clearSearchResults();
+    renderSearchResults(query);
+  }
+});
+
 inputField.addEventListener("keydown", function (e) {
   const listItems = document.querySelectorAll(".list-group-item");
 
