@@ -229,23 +229,29 @@ autocompleteList.addEventListener("touchstart", function (e) {
 inputField.addEventListener("keydown", function (e) {
   const listItems = document.querySelectorAll(".list-group-item");
 
-  if (e.key === "ArrowDown" && index < listItems.length) {
-    index === listItems.length - 1 ? (index = 0) : index++;
-    listItems.classList?.remove("active");
-    listItems[index].classList?.add("active");
-  }
-
-  if (e.key === "ArrowUp") {
-    index === -1 || index === 0 ? (index = listItems.length - 1) : index--;
-    listItems.classList?.remove("active");
-    listItems[index].classList?.add("active");
-  }
-  if (e.key === "Enter" && index !== -1) {
+  if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "Enter") {
     e.preventDefault();
-    const query = listItems[index].textContent;
-    clearAutocomplete();
-    clearSearchResults();
-    renderSearchResults(query);
+
+    if (e.key === "ArrowDown") {
+      index = index === listItems.length - 1 ? 0 : index + 1;
+    }
+
+    if (e.key === "ArrowUp") {
+      index = index <= 0 ? listItems.length - 1 : index - 1;
+    }
+
+    // Highlight current item
+    listItems.forEach((item, i) =>
+      item.classList.toggle("active", i === index)
+    );
+
+    // Select item on Enter
+    if (e.key === "Enter" && index !== -1) {
+      const query = listItems[index].textContent;
+      clearAutocomplete();
+      clearSearchResults();
+      renderSearchResults(query);
+    }
   }
 });
 
