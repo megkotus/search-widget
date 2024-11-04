@@ -2,14 +2,6 @@
   padding: 100px 25px;
 }
 
-/* .container {
-  background-color: #5a5555;
-} */
-
-/* .search-results {
-  background-color: #b25252;
-} */
-
 .input-group {
   position: relative;
   width: 100%;
@@ -28,6 +20,13 @@
   margin: 0;
 }
 
-/* .pagination {
-  background-color: blue;
-} */
+.footer {
+  background-color: lightgrey;
+  position: fixed;
+  padding-top: 12px;
+  padding-right: 24px;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: right;
+}

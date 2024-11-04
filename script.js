@@ -1,9 +1,3 @@
-// ----- TO-DO:
-// 1. FIX clear input - saves meta, enter etc.;
-// 2. Add arrows for autocomplete nav
-// 3. Find another way to filter out input keys
-// 4. !!! Autocomplete doesn't show the first child
-
 const API_URL = "https://api.thedogapi.com/";
 const ENDPOINT_IMAGE = "v1/images/";
 const ENDPOINT_BREEDS = "v1/breeds";
@@ -179,53 +173,7 @@ const clearAutocomplete = function () {
   autocompleteList.replaceChildren();
 };
 
-// Read input
-// inputField.addEventListener("keydown", function (e) {
-//   if (autocompleteList.hasChildNodes()) clearAutocomplete();
-
-//   // Prevent symbols and numerals input
-//   if (!e.key.match(letters)) {
-//     e.preventDefault();
-//   }
-
-//   // Read character
-//   if (e.key.match(letters) && e.key.length < 2) {
-//     input += e.key;
-//   }
-
-//   // Erase
-//   if (e.key === "Backspace" && input !== "") {
-//     input = input.slice(0, -1);
-//     // Clear list
-//     if (input === "") {
-//       clearAutocomplete();
-//       return;
-//     }
-//   }
-
-//   // Find matches
-//   const autocompleteResults = allBreedNames.filter((breed) => {
-//     return breed.toLowerCase().includes(input.toLowerCase());
-//   });
-
-//   // Render results
-//   const renderAutocomplete = function () {
-//     autocompleteResults.map((res) => {
-//       const template = document.getElementById("autofill-items-list");
-//       const clone = template.content.cloneNode(true);
-
-//       // Create list item
-//       autocompleteList.insertBefore(clone, autocompleteList.firstElementChild);
-
-//       const listItem = document.getElementById("list-item");
-
-//       if (listItem) listItem.textContent = res;
-//     });
-//   };
-
-//   renderAutocomplete();
-// });
-
+// Render autocomplete results
 const renderAutocomplete = function (autocompleteResults) {
   autocompleteResults.map((res) => {
     const template = document.getElementById("autofill-items-list");
@@ -235,29 +183,25 @@ const renderAutocomplete = function (autocompleteResults) {
 
     if (listItem) listItem.textContent = res;
 
-    // Append the cloned list item to the autocomplete list
     autocompleteList.insertBefore(clone, autocompleteList.firstElementChild);
   });
 };
 
-// Trying input event instead of keydown
+// Read input
 inputField.addEventListener("input", function (e) {
-  // Clear previous autocomplete suggestions
+  // Clear previous
   if (autocompleteList.hasChildNodes()) clearAutocomplete();
 
-  // Prevent symbols and numerals input
   if (!e.data || !e.data.match(letters)) {
     return;
   }
 
-  // Update the input variable and find matches
   input = e.target.value;
 
   const autocompleteResults = allBreedNames.filter((breed) => {
     return breed.toLowerCase().includes(input.toLowerCase());
   });
 
-  // Render results if there is input
   if (autocompleteResults.length) renderAutocomplete(autocompleteResults);
 });
 
@@ -281,6 +225,7 @@ autocompleteList.addEventListener("touchstart", function (e) {
   }
 });
 
+// For desktop
 inputField.addEventListener("keydown", function (e) {
   const listItems = document.querySelectorAll(".list-group-item");
 
