@@ -22,7 +22,7 @@
 
 .footer {
   background-color: lightgrey;
-  position: fixed;
+  position: absolute;
   padding-top: 12px;
   padding-right: 24px;
   left: 0;
