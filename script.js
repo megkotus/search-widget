@@ -180,50 +180,85 @@ const clearAutocomplete = function () {
 };
 
 // Read input
-inputField.addEventListener("keydown", function (e) {
+// inputField.addEventListener("keydown", function (e) {
+//   if (autocompleteList.hasChildNodes()) clearAutocomplete();
+
+//   // Prevent symbols and numerals input
+//   if (!e.key.match(letters)) {
+//     e.preventDefault();
+//   }
+
+//   // Read character
+//   if (e.key.match(letters) && e.key.length < 2) {
+//     input += e.key;
+//   }
+
+//   // Erase
+//   if (e.key === "Backspace" && input !== "") {
+//     input = input.slice(0, -1);
+//     // Clear list
+//     if (input === "") {
+//       clearAutocomplete();
+//       return;
+//     }
+//   }
+
+//   // Find matches
+//   const autocompleteResults = allBreedNames.filter((breed) => {
+//     return breed.toLowerCase().includes(input.toLowerCase());
+//   });
+
+//   // Render results
+//   const renderAutocomplete = function () {
+//     autocompleteResults.map((res) => {
+//       const template = document.getElementById("autofill-items-list");
+//       const clone = template.content.cloneNode(true);
+
+//       // Create list item
+//       autocompleteList.insertBefore(clone, autocompleteList.firstElementChild);
+
+//       const listItem = document.getElementById("list-item");
+
+//       if (listItem) listItem.textContent = res;
+//     });
+//   };
+
+//   renderAutocomplete();
+// });
+
+const renderAutocomplete = function (autocompleteResults) {
+  autocompleteResults.map((res) => {
+    const template = document.getElementById("autofill-items-list");
+    const clone = template.content.cloneNode(true);
+
+    const listItem = clone.querySelector("#list-item");
+
+    if (listItem) listItem.textContent = res;
+
+    // Append the cloned list item to the autocomplete list
+    autocompleteList.insertBefore(clone, autocompleteList.firstElementChild);
+  });
+};
+
+// Trying input event instead of keydown
+inputField.addEventListener("input", function (e) {
+  // Clear previous autocomplete suggestions
   if (autocompleteList.hasChildNodes()) clearAutocomplete();
 
   // Prevent symbols and numerals input
-  if (!e.key.match(letters)) {
-    e.preventDefault();
+  if (!e.data || !e.data.match(letters)) {
+    return;
   }
 
-  // Read character
-  if (e.key.match(letters) && e.key.length < 2) {
-    input += e.key;
-  }
+  // Update the input variable and find matches
+  input = e.target.value;
 
-  // Erase
-  if (e.key === "Backspace" && input !== "") {
-    input = input.slice(0, -1);
-    // Clear list
-    if (input === "") {
-      clearAutocomplete();
-      return;
-    }
-  }
-
-  // Find matches
   const autocompleteResults = allBreedNames.filter((breed) => {
     return breed.toLowerCase().includes(input.toLowerCase());
   });
 
-  // Render results
-  const renderAutocomplete = function () {
-    autocompleteResults.map((res) => {
-      const template = document.getElementById("autofill-items-list");
-      const clone = template.content.cloneNode(true);
-
-      // Create list item
-      autocompleteList.insertBefore(clone, autocompleteList.firstElementChild);
-
-      const listItem = document.getElementById("list-item");
-
-      if (listItem) listItem.textContent = res;
-    });
-  };
-
-  renderAutocomplete();
+  // Render results if there is input
+  if (autocompleteResults.length) renderAutocomplete(autocompleteResults);
 });
 
 // Choose autocomplete result
