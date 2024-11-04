@@ -230,7 +230,15 @@ inputField.addEventListener("keydown", function (e) {
   const listItems = document.querySelectorAll(".list-group-item");
 
   if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "Enter") {
-    e.preventDefault();
+    // Select item on Enter
+    if (e.key === "Enter" && index !== -1) {
+      e.preventDefault();
+      const query = listItems[index].textContent;
+      clearAutocomplete();
+      clearSearchResults();
+      renderSearchResults(query);
+      return;
+    }
 
     if (e.key === "ArrowDown") {
       index = index === listItems.length - 1 ? 0 : index + 1;
@@ -244,14 +252,6 @@ inputField.addEventListener("keydown", function (e) {
     listItems.forEach((item, i) =>
       item.classList.toggle("active", i === index)
     );
-
-    // Select item on Enter
-    if (e.key === "Enter" && index !== -1) {
-      const query = listItems[index].textContent;
-      clearAutocomplete();
-      clearSearchResults();
-      renderSearchResults(query);
-    }
   }
 });
 
