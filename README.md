@@ -1,22 +1,22 @@
 # Search widget for The Dogs Api
 
-This is a simple responsive search widget allowing to search for breeds of The Dog API library.
+A web component that provides a real-time search input with filtering, designed for the dog breeds API. This is a pet project and is still in progress.
 
-The project is still in progresss.
+## Features
 
-    Done:
+- 🔍 Live search with instant filtering
+- 🐶 Displays results from the dog breeds API
+- 🎨 Simple and customizable UI
 
-1. Responsive UI on BS
-2. Load breeds on page load
-3. Result suggestions on input
-4. Arrow keys navigation for suggestions
-5. Render search results on submit
+## Tech Stack
 
-   To-Do:
+- **JavaScript** (ES6+)
+- **Web Components**
 
-6. Improve results rendering speed
-7. Add debouncing to prevent multiple submits
-8. Add pagination (10 res/p)
-9. Limit results suggestions
-10. Extra - Show search results for height/weight/other info…
-11. Extra - Add search by filter tags
+## To-Do:
+
+1. Improve results rendering speed
+2. Add debouncing to prevent multiple submits
+3. Add pagination (10 res/p)
+4. Limit results suggestions
+5. Extra - Add search by filter tags

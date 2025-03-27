@@ -142,16 +142,47 @@ const renderSearchResults = async function (query) {
 
         // Fill the template
         let dogBreed = document.getElementById("breed");
-        let dogDescription = document.getElementById("description");
+        let dogDescriptionBreedGroup = document.getElementById(
+          "description-breed-group"
+        );
+        let dogDescriptionPurpose = document.getElementById(
+          "description-purpose"
+        );
+        let dogDescriptionTemperament = document.getElementById(
+          "description-temperament"
+        );
+        let dogDescriptionWeight =
+          document.getElementById("description-weight");
+        let dogDescriptionHeight =
+          document.getElementById("description-height");
         let dogImg = document.getElementById("img");
 
         dogBreed.textContent = dog.name;
 
-        dogDescription.textContent = `The breed belongs to ${dog.breedGroup?.toLowerCase()} dogs. Purpose: ${
-          dog.bredFor
-        }. The breed is ${dog.temperament?.toLowerCase()}. Has a life span of ${
-          dog.lifeSpan
-        }. Weight: ${dog.weight}. Height: ${dog.height}.`;
+        if (dog.breedGroup) {
+          dogDescriptionBreedGroup.textContent = `The breed belongs to ${dog.breedGroup.toLowerCase()} dogs.`;
+        }
+        if (dog.bredFor) {
+          dogDescriptionPurpose.textContent = `Purpose: ${dog.bredFor}.`;
+        }
+
+        if (dog.temperament) {
+          dogDescriptionTemperament.textContent = `The breed is ${dog.temperament.toLowerCase()}. Has a life span of ${
+            dog.lifeSpan
+          }.`;
+        }
+        if (dog.weight) {
+          dogDescriptionWeight.textContent = `Weight: ${dog.weight.replace(
+            "NaN -",
+            "up to"
+          )} kg.`;
+        }
+        if (dog.height) {
+          dogDescriptionHeight.textContent = `Height: ${dog.height.replace(
+            "NaN -",
+            "up to"
+          )} cm.`;
+        }
 
         dogImg.src = picture.url;
 
@@ -175,7 +206,7 @@ const clearAutocomplete = function () {
 
 // Render autocomplete results
 const renderAutocomplete = function (autocompleteResults) {
-  autocompleteResults.map((res) => {
+  autocompleteResults.forEach((res) => {
     const template = document.getElementById("autofill-items-list");
     const clone = template.content.cloneNode(true);
 
@@ -183,7 +214,7 @@ const renderAutocomplete = function (autocompleteResults) {
 
     if (listItem) listItem.textContent = res;
 
-    autocompleteList.insertBefore(clone, autocompleteList.firstElementChild);
+    autocompleteList.appendChild(clone);
   });
 };
 
@@ -192,9 +223,9 @@ inputField.addEventListener("input", function (e) {
   // Clear previous
   if (autocompleteList.hasChildNodes()) clearAutocomplete();
 
-  if (!e.data || !e.data.match(letters)) {
-    return;
-  }
+  input = e.target.value.trim();
+
+  if (!input || !input.match(letters)) return;
 
   input = e.target.value;
 
